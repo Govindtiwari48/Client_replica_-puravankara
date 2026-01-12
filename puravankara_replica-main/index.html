@@ -212,7 +212,7 @@
                                 <p class="offer-info-text text-center mb-0 px-2">Spacious 2, 3 & 4 BHK Starts</p>
                                 <div class="price-text mb-2">
                                     <span class="color-imp me-1">₹</span>
-                                    <span class="price-sub-text">3.37 Cr*</span>
+                                    <span class="price-sub-text">3.57 Cr*</span>
                                     <span class="price">Onwards</span>
                                 </div>
                                 <button id="banner-enquiry-button" data-id="banner-enquiry-desktop" type="button"
@@ -493,10 +493,10 @@
                                         <tbody>
                                             <tr>
                                                 <td class="price">2 BHK</td>
-                                                <td>775 Sq. Ft.</td>
+                                                <td>795 Sq. Ft.</td>
                                                 <td class="price">
                                                     <span style="font-family: sans-serif;">₹</span>
-                                                    3.37 Cr*
+                                                    3.57 Cr*
                                                 </td>
                                                 <td>
                                                     <a href="javascript:void(0);" class="btn text-white my-1 custom-btn"
@@ -507,10 +507,24 @@
                                             </tr>
                                             <tr>
                                                 <td class="price">3 BHK</td>
-                                                <td>1200 Sq. Ft.</td>
+                                                <td>1136 Sq. Ft.</td>
                                                 <td class="price">
                                                     <span style="font-family: sans-serif;">₹</span>
-                                                    5.40 Cr*
+                                                    5.11 Cr*
+                                                </td>
+                                                <td>
+                                                    <a href="javascript:void(0);" class="btn text-white my-1 custom-btn"
+                                                        data-bs-target="#enquire-modal" data-bs-toggle="modal">
+                                                        <span class="enquireNowBtn">Complete Costing Details</span>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="price">3 BHK</td>
+                                                <td>1345 Sq. Ft.</td>
+                                                <td class="price">
+                                                    <span style="font-family: sans-serif;">₹</span>
+                                                    6.05 Cr*
                                                 </td>
                                                 <td>
                                                     <a href="javascript:void(0);" class="btn text-white my-1 custom-btn"
@@ -521,10 +535,63 @@
                                             </tr>
                                             <tr>
                                                 <td class="price">4 BHK</td>
-                                                <td>1650 Sq. Ft.</td>
+                                                <td>1602 Sq. Ft.</td>
                                                 <td class="price">
                                                     <span style="font-family: sans-serif;">₹</span>
-                                                    7.43 Cr*
+                                                    7.20 Cr*
+                                                </td>
+                                                <td>
+                                                    <a href="javascript:void(0);" class="btn text-white my-1 custom-btn"
+                                                        data-bs-target="#enquire-modal" data-bs-toggle="modal">
+                                                        <span class="enquireNowBtn">Complete Costing Details</span>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="price">4 BHK</td>
+                                                <td>1638 Sq. Ft.</td>
+                                                <td class="price">
+                                                    <span style="font-family: sans-serif;">₹</span>
+                                                    7.37 Cr*
+                                                </td>
+                                                <td>
+                                                    <a href="javascript:void(0);" class="btn text-white my-1 custom-btn"
+                                                        data-bs-target="#enquire-modal" data-bs-toggle="modal">
+                                                        <span class="enquireNowBtn">Complete Costing Details</span>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="price">2+2 Jodi</td>
+                                                <td>1590 Sq. Ft.</td>
+                                                <td class="price">
+                                                    On Request
+                                                </td>
+                                                <td>
+                                                    <a href="javascript:void(0);" class="btn text-white my-1 custom-btn"
+                                                        data-bs-target="#enquire-modal" data-bs-toggle="modal">
+                                                        <span class="enquireNowBtn">Complete Costing Details</span>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="price">3+3 Jodi</td>
+                                                <td>2500 Sq. Ft.</td>
+                                                <td class="price">
+                                                    On Request
+                                                </td>
+                                                <td>
+                                                    <a href="javascript:void(0);" class="btn text-white my-1 custom-btn"
+                                                        data-bs-target="#enquire-modal" data-bs-toggle="modal">
+                                                        <span class="enquireNowBtn">Complete Costing Details</span>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="price">4+4 Duplex</td>
+                                                <td>3200 Sq. Ft.</td>
+                                                <td class="price">
+                                                    On Request
                                                 </td>
                                                 <td>
                                                     <a href="javascript:void(0);" class="btn text-white my-1 custom-btn"
@@ -1384,6 +1451,51 @@
                             </div>
                         </div>
                     </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Black Friday Popup Banner -->
+    <div id="blackFridayPopup" class="black-friday-popup">
+        <div class="black-friday-overlay"></div>
+        <div class="black-friday-content">
+            <button class="black-friday-close" id="blackFridayClose" aria-label="Close">
+                <span>×</span>
+            </button>
+            <div class="black-friday-image-container">
+                <img src="assets/images/popup/black-friday-popup.jpg" 
+                     alt="Black Friday Mega Sale - Square Yards" 
+                     class="black-friday-image" 
+                     loading="lazy"
+                     onerror="this.style.display='none'; document.querySelector('.black-friday-fallback').style.display='block';" />
+                
+                <!-- Fallback content if image doesn't load -->
+                <div class="black-friday-fallback" style="display: none;">
+                    <div class="bf-logo">
+                        <div class="bf-logo-icon"></div>
+                        <span>square yards</span>
+                    </div>
+                    
+                    <div class="bf-headline">
+                        BLACK<br>FRIDAY
+                    </div>
+                    
+                    <div class="bf-subheadline">Mega Sale</div>
+                    
+                    <div class="bf-tagline">Your Next Big Profit Has A New Pin Code</div>
+                    
+                    <div class="bf-location">
+                        <i class="bf-pin-icon">📍</i>
+                        <span class="bf-location-text">LOKHANDWALA 2.0</span>
+                    </div>
+                    
+                    <div class="bf-property-details">2, 3 & 4 BHKs starting at</div>
+                    
+                    <div class="bf-price">JUST ₹5 LAKHS EOI</div>
+                    
+                    <div class="bf-footer-tagline">Turn Every Square Foot Into A Fortune With Square Yards</div>
+                    
+                    <div class="bf-disclaimer">*T&C Apply</div>
                 </div>
             </div>
         </div>

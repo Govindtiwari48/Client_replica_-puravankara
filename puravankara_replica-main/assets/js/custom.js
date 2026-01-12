@@ -300,7 +300,7 @@ $(document).ready(function () {
         weblead: `Kindly share further details About ${projectName}. I would like to know more about this project.`
     };
     const messageMap = Object.assign({}, defaultMessageMap, whatsappConfig.messageMap || {});
-    const phoneNumber = (whatsappConfig.phoneNumber || '919967445524').replace(/\D/g, '');
+    const phoneNumber = (whatsappConfig.phoneNumber || '919986661295').replace(/\D/g, '');
 
     const sourceKey = (mainsource || utm_source || "").toLowerCase();
     // const whatsappMessage = messageMap[sourceKey] || messageMap["defaultMsg"];
@@ -1068,7 +1068,7 @@ function submitForm(event, formName) {
         }
 
         // Send lead data via WhatsApp before redirecting
-        const whatsappPhone = (window.whatsappConfig && window.whatsappConfig.phoneNumber) || '916393828751';
+        const whatsappPhone = (window.whatsappConfig && window.whatsappConfig.phoneNumber) || '919986661295';
         const projectName = (window.whatsappConfig && window.whatsappConfig.projectName) || 'Puravankara Lokhandwala';
 
         // Build WhatsApp message with lead details
@@ -1209,5 +1209,167 @@ $(document).ready(function () {
         $('.chat-pop-msg').css('display', 'none');
         stopPopupInterval();
     });
+
+    // ============================================
+    // BLACK FRIDAY POPUP FUNCTIONALITY
+    // ============================================
+    let blackFridayPopupShown = false;
+    let blackFridayPopupElement = null;
+
+    function initBlackFridayPopup() {
+        blackFridayPopupElement = document.getElementById('blackFridayPopup');
+        if (!blackFridayPopupElement) {
+            console.warn('Black Friday popup element not found');
+            return false;
+        }
+        return true;
+    }
+
+    function showBlackFridayPopup() {
+        // Initialize popup element if not done already
+        if (!blackFridayPopupElement && !initBlackFridayPopup()) {
+            return false;
+        }
+
+        // Check if popup was already closed in this session
+        const popupClosed = sessionStorage.getItem('blackFridayPopupClosed');
+        if (popupClosed === 'true') {
+            console.log('Black Friday popup already closed in this session');
+            return false;
+        }
+
+        if (blackFridayPopupShown) {
+            console.log('Black Friday popup already shown');
+            return false;
+        }
+
+        // Check if any modal is currently open
+        const openModals = document.querySelectorAll('.modal.show, .modal[style*="display: block"]');
+        if (openModals.length > 0) {
+            console.log('Modal is still open, delaying popup');
+            setTimeout(showBlackFridayPopup, 500);
+            return false;
+        }
+
+        try {
+            // Add show class and display the popup
+            blackFridayPopupElement.classList.add('show');
+            blackFridayPopupElement.style.display = 'flex';
+            blackFridayPopupShown = true;
+            
+            // Prevent body scroll when popup is open
+            document.body.style.overflow = 'hidden';
+            
+            // Auto-hide after 15 seconds if user doesn't interact
+            setTimeout(function() {
+                if (blackFridayPopupElement && blackFridayPopupElement.classList.contains('show')) {
+                    hideBlackFridayPopup();
+                }
+            }, 15000);
+            
+            console.log('Black Friday popup shown successfully');
+            return true;
+        } catch(e) {
+            console.error('Error showing Black Friday popup:', e);
+            return false;
+        }
+    }
+
+    function hideBlackFridayPopup() {
+        if (!blackFridayPopupElement) {
+            return;
+        }
+
+        try {
+            // Remove show class and hide the popup
+            blackFridayPopupElement.classList.remove('show');
+            setTimeout(() => {
+                if (blackFridayPopupElement) {
+                    blackFridayPopupElement.style.display = 'none';
+                }
+            }, 300); // Wait for animation to complete
+            
+            // Restore body scroll
+            document.body.style.overflow = '';
+            
+            // Store in sessionStorage that popup was closed
+            sessionStorage.setItem('blackFridayPopupClosed', 'true');
+            
+            console.log('Black Friday popup hidden');
+        } catch(e) {
+            console.error('Error hiding Black Friday popup:', e);
+        }
+    }
+
+    // Initialize popup on DOM ready
+    initBlackFridayPopup();
+
+    // Close button functionality - using both jQuery and vanilla JS for compatibility
+    $(document).on('click', '#blackFridayClose', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        hideBlackFridayPopup();
+    });
+
+    // Close on overlay click
+    $(document).on('click', '.black-friday-overlay', function(e) {
+        if (e.target === e.currentTarget) {
+            hideBlackFridayPopup();
+        }
+    });
+
+    // Close on escape key
+    $(document).on('keydown', function(e) {
+        if (e.key === 'Escape' && blackFridayPopupElement && blackFridayPopupElement.classList.contains('show')) {
+            hideBlackFridayPopup();
+        }
+    });
+
+    // Show popup ONLY AFTER enquiry modal is closed (not while it's open)
+    $('#enquire-modal, #autoPopup').on('hidden.bs.modal', function () {
+        console.log('Modal closed, scheduling Black Friday popup');
+        // Show Black Friday popup after enquiry modal is completely closed
+        setTimeout(function() {
+            const shown = showBlackFridayPopup();
+            if (shown) {
+                console.log('Black Friday popup shown after enquiry modal closed');
+            } else {
+                console.log('Black Friday popup not shown - already shown or closed in this session');
+            }
+        }, 800); // Increased delay to ensure modal is fully closed
+    });
+    
+    // Also listen for Bootstrap 5 modal events (in case jQuery events don't fire)
+    const enquireModal = document.getElementById('enquire-modal');
+    const autoPopup = document.getElementById('autoPopup');
+    
+    if (enquireModal) {
+        enquireModal.addEventListener('hidden.bs.modal', function () {
+            setTimeout(function() {
+                showBlackFridayPopup();
+            }, 800);
+        });
+    }
+    
+    if (autoPopup) {
+        autoPopup.addEventListener('hidden.bs.modal', function () {
+            setTimeout(function() {
+                showBlackFridayPopup();
+            }, 800);
+        });
+    }
+
+    // For testing purposes - show popup after 3 seconds if no modals have been shown
+    // Remove this in production or when testing is complete
+    setTimeout(function() {
+        if (!blackFridayPopupShown && sessionStorage.getItem('blackFridayPopupClosed') !== 'true') {
+            console.log('Testing: Showing Black Friday popup after delay');
+            showBlackFridayPopup();
+        }
+    }, 3000);
+
+    // Make functions available globally for testing
+    window.showBlackFridayPopup = showBlackFridayPopup;
+    window.hideBlackFridayPopup = hideBlackFridayPopup;
 });
 // $("body").attr("id", "on-rera");
