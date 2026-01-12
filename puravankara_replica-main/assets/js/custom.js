@@ -1212,9 +1212,10 @@ $(document).ready(function () {
 
     // ============================================
     // BLACK FRIDAY POPUP FUNCTIONALITY
+    // Shows on every page refresh, just like other popups
     // ============================================
-    let blackFridayPopupShown = false;
     let blackFridayPopupElement = null;
+    let blackFridayPopupTimeout = null;
 
     function initBlackFridayPopup() {
         blackFridayPopupElement = document.getElementById('blackFridayPopup');
@@ -1231,15 +1232,9 @@ $(document).ready(function () {
             return false;
         }
 
-        // Check if popup was already closed in this session
-        const popupClosed = sessionStorage.getItem('blackFridayPopupClosed');
-        if (popupClosed === 'true') {
-            console.log('Black Friday popup already closed in this session');
-            return false;
-        }
-
-        if (blackFridayPopupShown) {
-            console.log('Black Friday popup already shown');
+        // Check if popup is already showing
+        if (blackFridayPopupElement && blackFridayPopupElement.classList.contains('show')) {
+            console.log('Black Friday popup already showing');
             return false;
         }
 
@@ -1247,7 +1242,12 @@ $(document).ready(function () {
         const openModals = document.querySelectorAll('.modal.show, .modal[style*="display: block"]');
         if (openModals.length > 0) {
             console.log('Modal is still open, delaying popup');
-            setTimeout(showBlackFridayPopup, 500);
+            // Clear any existing timeout
+            if (blackFridayPopupTimeout) {
+                clearTimeout(blackFridayPopupTimeout);
+            }
+            // Retry after modal closes
+            blackFridayPopupTimeout = setTimeout(showBlackFridayPopup, 500);
             return false;
         }
 
@@ -1255,7 +1255,6 @@ $(document).ready(function () {
             // Add show class and display the popup
             blackFridayPopupElement.classList.add('show');
             blackFridayPopupElement.style.display = 'flex';
-            blackFridayPopupShown = true;
             
             // Prevent body scroll when popup is open
             document.body.style.overflow = 'hidden';
@@ -1292,8 +1291,11 @@ $(document).ready(function () {
             // Restore body scroll
             document.body.style.overflow = '';
             
-            // Store in sessionStorage that popup was closed
-            sessionStorage.setItem('blackFridayPopupClosed', 'true');
+            // Clear any pending timeouts
+            if (blackFridayPopupTimeout) {
+                clearTimeout(blackFridayPopupTimeout);
+                blackFridayPopupTimeout = null;
+            }
             
             console.log('Black Friday popup hidden');
         } catch(e) {
@@ -1330,13 +1332,8 @@ $(document).ready(function () {
         console.log('Modal closed, scheduling Black Friday popup');
         // Show Black Friday popup after enquiry modal is completely closed
         setTimeout(function() {
-            const shown = showBlackFridayPopup();
-            if (shown) {
-                console.log('Black Friday popup shown after enquiry modal closed');
-            } else {
-                console.log('Black Friday popup not shown - already shown or closed in this session');
-            }
-        }, 800); // Increased delay to ensure modal is fully closed
+            showBlackFridayPopup();
+        }, 800); // Delay to ensure modal is fully closed
     });
     
     // Also listen for Bootstrap 5 modal events (in case jQuery events don't fire)
@@ -1359,14 +1356,19 @@ $(document).ready(function () {
         });
     }
 
-    // For testing purposes - show popup after 3 seconds if no modals have been shown
-    // Remove this in production or when testing is complete
+    // Show popup on page load after a delay (like other popups)
+    // This ensures it shows on every page refresh
     setTimeout(function() {
-        if (!blackFridayPopupShown && sessionStorage.getItem('blackFridayPopupClosed') !== 'true') {
-            console.log('Testing: Showing Black Friday popup after delay');
+        // Only show if no modals are currently open
+        const openModals = document.querySelectorAll('.modal.show, .modal[style*="display: block"]');
+        if (openModals.length === 0) {
+            console.log('Page loaded: Showing Black Friday popup');
             showBlackFridayPopup();
+        } else {
+            // If modal is open, wait for it to close
+            console.log('Modal is open on page load, will show after modal closes');
         }
-    }, 3000);
+    }, 2000); // Show after 2 seconds on page load
 
     // Make functions available globally for testing
     window.showBlackFridayPopup = showBlackFridayPopup;
