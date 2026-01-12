@@ -1,0 +1,56 @@
+═══════════════════════════════════════════════════════════════
+  HOW TO ENABLE BLACK FRIDAY POPUP IN THE FUTURE
+═══════════════════════════════════════════════════════════════
+
+STEP 1: Add Your Image
+───────────────────────────────────────────────────────────────
+  Save your promotional image in this folder as:
+  
+  📁 assets/images/popup/black-friday-popup.jpg
+  
+  Recommended specs:
+  • Format: JPG, PNG, or WebP
+  • Max width: 600px
+  • Max height: 800px  
+  • File size: Under 200KB
+
+STEP 2: Uncomment HTML
+───────────────────────────────────────────────────────────────
+  Open: index.html
+  
+  Find this section (around line 1458):
+  <!-- ============================================
+       BLACK FRIDAY POPUP BANNER - COMMENTED OUT
+       ...
+  -->
+  
+  Remove the <!-- at the start and --> at the end
+  (Uncomment the entire <div id="blackFridayPopup"> block)
+
+STEP 3: Uncomment JavaScript
+───────────────────────────────────────────────────────────────
+  Open: assets/js/custom.js
+  
+  Find this section (around line 1213):
+  // ============================================
+  // BLACK FRIDAY POPUP FUNCTIONALITY - COMMENTED OUT
+  // ...
+  /*
+  ... (all the code) ...
+  */
+  
+  Remove the /* at the start and */ at the end
+  (Uncomment all the JavaScript code)
+
+STEP 4: Test
+───────────────────────────────────────────────────────────────
+  • Refresh your website
+  • Popup should appear after 2 seconds
+  • Or fill out an enquiry form - popup shows after form closes
+
+═══════════════════════════════════════════════════════════════
+  THAT'S IT! The popup will work automatically once you:
+  1. Add the image
+  2. Uncomment HTML
+  3. Uncomment JavaScript
+═══════════════════════════════════════════════════════════════

@@ -1211,9 +1211,15 @@ $(document).ready(function () {
     });
 
     // ============================================
-    // BLACK FRIDAY POPUP FUNCTIONALITY
-    // Shows on every page refresh, just like other popups
+    // BLACK FRIDAY POPUP FUNCTIONALITY - COMMENTED OUT
     // ============================================
+    // TO RE-ENABLE: 
+    // 1. Uncomment the code below (remove /* and */)
+    // 2. Add your promotional image to: assets/images/popup/black-friday-popup.jpg
+    // 3. The popup will automatically show on page load and after enquiry forms
+    // ============================================
+    
+    /*
     let blackFridayPopupElement = null;
     let blackFridayPopupTimeout = null;
 
@@ -1373,5 +1379,6 @@ $(document).ready(function () {
     // Make functions available globally for testing
     window.showBlackFridayPopup = showBlackFridayPopup;
     window.hideBlackFridayPopup = hideBlackFridayPopup;
+    */
 });
 // $("body").attr("id", "on-rera");
