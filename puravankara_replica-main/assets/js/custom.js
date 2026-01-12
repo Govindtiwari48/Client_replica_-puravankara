@@ -6,7 +6,7 @@
 // 1. Deploy your Google Apps Script as a Web App
 // 2. Copy the Web App URL from the deployment
 // 3. Paste it here
-const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzevyVFVwUjVM771FXkJtlqC4WoWDdGg1bATFjLyLLGBnGbbdalI-nnjfsNu-hE47lKlw/exec'; // <-- PASTE YOUR GOOGLE APPS SCRIPT URL HERE
+const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxdpIq-GIpADc6Kti7nuyynllkEQgCWNN-rcA76jMSHXZh7G-8N7WPXdr-h8LbTpAg/exec'; // <-- PASTE YOUR NEW GOOGLE APPS SCRIPT URL HERE (from your new Gmail account)
 
 // ============================================
 
@@ -1068,22 +1068,18 @@ function submitForm(event, formName) {
         }
 
         // Send lead data via WhatsApp before redirecting
-        const whatsappPhone = (window.whatsappConfig && window.whatsappConfig.phoneNumber) || '919986661295';
-        const projectName = (window.whatsappConfig && window.whatsappConfig.projectName) || 'Puravankara Lokhandwala';
+        // const whatsappPhone = (window.whatsappConfig && window.whatsappConfig.phoneNumber) || '919986661295';
+        // const projectName = (window.whatsappConfig && window.whatsappConfig.projectName) || 'Puravankara Lokhandwala';
 
-        // Build WhatsApp message with lead details
-        const leadMessage = `🏠 *New Lead from ${projectName}*\n\n` +
-            `👤 *Name:* ${form_data.name || 'Not provided'}\n` +
-            `📱 *Phone:* ${form_data.mobile || 'Not provided'}\n` +
-            `📧 *Email:* ${form_data.email || 'Not provided'}\n` +
-            `📋 *Form:* ${form_data.form_name || 'Website Form'}\n` +
-            `🔗 *Source:* ${form_data.currentUrl || window.location.href}`;
+        // Build WhatsApp message with professional greeting
+        // const userName = form_data.name || 'there';
+        // const leadMessage = `Hi ${userName}, I would like to know more about ${projectName}. Please share details.`;
 
-        const encodedMessage = encodeURIComponent(leadMessage);
-        const whatsappUrl = `https://api.whatsapp.com/send?phone=${whatsappPhone}&text=${encodedMessage}`;
+        // const encodedMessage = encodeURIComponent(leadMessage);
+        // const whatsappUrl = `https://api.whatsapp.com/send?phone=${whatsappPhone}&text=${encodedMessage}`;
 
         // Open WhatsApp in new tab
-        window.open(whatsappUrl, '_blank');
+        // window.open(whatsappUrl, '_blank');
 
         // Redirect to thank you page after a brief delay
         setTimeout(function () {
@@ -1218,7 +1214,7 @@ $(document).ready(function () {
     // 2. Add your promotional image to: assets/images/popup/black-friday-popup.jpg
     // 3. The popup will automatically show on page load and after enquiry forms
     // ============================================
-    
+
     /*
     let blackFridayPopupElement = null;
     let blackFridayPopupTimeout = null;

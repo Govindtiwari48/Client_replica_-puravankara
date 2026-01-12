@@ -8,7 +8,7 @@ This guide will help you set up the Google Sheets integration for your enquiry f
 2. Make sure you have a sheet named **"Sheet1"**
 3. Ensure the first row has these column headers (in this order):
    - **Column A**: Name
-   - **Column B**: Number
+   - **Column B**: Phone
    - **Column C**: Email
 
 ## Step 2: Set Up Google Apps Script

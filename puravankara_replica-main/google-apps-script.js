@@ -16,7 +16,7 @@
  * 
  * IMPORTANT: Make sure your Google Sheet has these columns in Sheet1:
  * - Column A: Name
- * - Column B: Number (or Phone)
+ * - Column B: Phone
  * - Column C: Email
  */
 
@@ -34,7 +34,7 @@ function doPost(e) {
       const newSheet = ss.insertSheet('Sheet1');
       // Add headers if sheet is empty
       if (newSheet.getLastRow() === 0) {
-        newSheet.getRange(1, 1, 1, 3).setValues([['Name', 'Number', 'Email']]);
+        newSheet.getRange(1, 1, 1, 3).setValues([['Name', 'Phone', 'Email']]);
       }
       return ContentService.createTextOutput(JSON.stringify({
         success: false,
@@ -51,13 +51,13 @@ function doPost(e) {
     if (!name || !number) {
       return ContentService.createTextOutput(JSON.stringify({
         success: false,
-        message: 'Name and Number are required fields.'
+        message: 'Name and Phone are required fields.'
       })).setMimeType(ContentService.MimeType.JSON);
     }
     
     // Add headers if sheet is empty (first row)
     if (sheet.getLastRow() === 0) {
-      sheet.getRange(1, 1, 1, 3).setValues([['Name', 'Number', 'Email']]);
+      sheet.getRange(1, 1, 1, 3).setValues([['Name', 'Phone', 'Email']]);
     }
     
     // Append the new row with form data
