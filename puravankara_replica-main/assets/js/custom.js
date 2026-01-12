@@ -1,3 +1,15 @@
+// ============================================
+// GOOGLE SHEETS INTEGRATION CONFIGURATION
+// ============================================
+// Replace this URL with your Google Apps Script Web App URL
+// To get your URL:
+// 1. Deploy your Google Apps Script as a Web App
+// 2. Copy the Web App URL from the deployment
+// 3. Paste it here
+const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzevyVFVwUjVM771FXkJtlqC4WoWDdGg1bATFjLyLLGBnGbbdalI-nnjfsNu-hE47lKlw/exec'; // <-- PASTE YOUR GOOGLE APPS SCRIPT URL HERE
+
+// ============================================
+
 const __initialURL = window.__initialURL || window.location.href;
 const __initialSearchString = window.__initialSearchString !== undefined
     ? window.__initialSearchString
@@ -707,6 +719,43 @@ function ensureEmailFieldsExist() {
 }
 
 
+/**
+ * Submit form data to Google Sheets via Google Apps Script
+ * @param {Object} formData - The form data object containing name, email, mobile
+ * @param {HTMLElement} submitButton - The submit button element
+ * @param {string} originalButtonText - The original button text to restore
+ */
+function submitToGoogleSheets(formData, submitButton, originalButtonText) {
+    // Prepare data for Google Sheets (only send name, mobile, email)
+    const sheetsData = {
+        name: formData.name || '',
+        mobile: formData.mobile || '',
+        email: formData.email || ''
+    };
+
+    console.log('Submitting to Google Sheets:', sheetsData);
+
+    // Make POST request to Google Apps Script
+    // Using no-cors mode because Google Apps Script Web Apps may have CORS restrictions
+    // The data will still be sent and saved, even if we can't read the response
+    fetch(GOOGLE_APPS_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors', // Required for Google Apps Script Web Apps
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(sheetsData)
+    })
+        .then(() => {
+            // With no-cors mode, we can't read the response, but the request was sent
+            console.log('Data submitted to Google Sheets (request sent)');
+        })
+        .catch((error) => {
+            // Errors in no-cors mode are limited, but we log them anyway
+            console.error('Error submitting to Google Sheets:', error);
+        });
+}
+
 //form submit//
 function submitForm(event, formName) {
     // alert("hii");
@@ -913,6 +962,13 @@ function submitForm(event, formName) {
         submitButton.disabled = true;
     } else {
         console.warn("Submit button not found for disabling!");
+    }
+
+    // --- Submit to Google Sheets (if URL is configured) ---
+    if (GOOGLE_APPS_SCRIPT_URL && GOOGLE_APPS_SCRIPT_URL.trim() !== '') {
+        submitToGoogleSheets(form_data, submitButton, originalButtonText);
+    } else {
+        console.warn('Google Apps Script URL not configured. Skipping Google Sheets submission.');
     }
 
     //----datalayer code
