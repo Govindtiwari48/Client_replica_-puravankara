@@ -6,7 +6,61 @@
 // 1. Deploy your Google Apps Script as a Web App
 // 2. Copy the Web App URL from the deployment
 // 3. Paste it here
-const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxdpIq-GIpADc6Kti7nuyynllkEQgCWNN-rcA76jMSHXZh7G-8N7WPXdr-h8LbTpAg/exec'; // <-- PASTE YOUR NEW GOOGLE APPS SCRIPT URL HERE (from your new Gmail account)
+const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxzwUq5Ih2eO3FsOJp155IhRSScCtikMYDsHJvClcE_1Vs_vjjYdjqZO3ABwabD9V4/exec';
+
+// Test function - Run this in browser console to test Google Sheets connection
+// Usage: testGoogleSheetsConnection()
+window.testGoogleSheetsConnection = function () {
+    const testData = {
+        name: 'Test User',
+        mobile: '9876543210',
+        email: 'test@example.com',
+        where_you_find_us: 'Google ads'
+    };
+
+    console.log('Testing Google Sheets connection...');
+    console.log('URL:', GOOGLE_APPS_SCRIPT_URL);
+    console.log('Test data:', testData);
+
+    fetch(GOOGLE_APPS_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(testData)
+    })
+        .then(response => {
+            console.log('Response status:', response.status);
+            console.log('Response headers:', response.headers);
+            return response.json();
+        })
+        .then(data => {
+            console.log('✅ SUCCESS! Response from Google Sheets:', data);
+            alert('Test successful! Check your Google Sheet for the test entry.');
+        })
+        .catch((error) => {
+            console.error('❌ ERROR:', error);
+            console.log('Trying no-cors mode...');
+
+            fetch(GOOGLE_APPS_SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(testData)
+            })
+                .then(() => {
+                    console.log('Request sent (no-cors mode). Check your Google Sheet.');
+                    alert('Request sent. Please check your Google Sheet manually.');
+                })
+                .catch((noCorsError) => {
+                    console.error('Both methods failed:', noCorsError);
+                    alert('Connection failed. Check console for details.');
+                });
+        });
+};
 
 // ============================================
 
@@ -726,33 +780,53 @@ function ensureEmailFieldsExist() {
  * @param {string} originalButtonText - The original button text to restore
  */
 function submitToGoogleSheets(formData, submitButton, originalButtonText) {
-    // Prepare data for Google Sheets (only send name, mobile, email)
+    // Prepare data for Google Sheets (send name, mobile, email, where_you_find_us)
     const sheetsData = {
         name: formData.name || '',
         mobile: formData.mobile || '',
-        email: formData.email || ''
+        email: formData.email || '',
+        where_you_find_us: formData.where_you_find_us || ''
     };
 
     console.log('Submitting to Google Sheets:', sheetsData);
+    console.log('Google Apps Script URL:', GOOGLE_APPS_SCRIPT_URL);
 
-    // Make POST request to Google Apps Script
-    // Using no-cors mode because Google Apps Script Web Apps may have CORS restrictions
-    // The data will still be sent and saved, even if we can't read the response
+    // First try with CORS mode to see the response
     fetch(GOOGLE_APPS_SCRIPT_URL, {
         method: 'POST',
-        mode: 'no-cors', // Required for Google Apps Script Web Apps
+        mode: 'cors',
         headers: {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify(sheetsData)
     })
-        .then(() => {
-            // With no-cors mode, we can't read the response, but the request was sent
-            console.log('Data submitted to Google Sheets (request sent)');
+        .then(response => {
+            console.log('Response status:', response.status);
+            if (response.ok) {
+                return response.json();
+            }
+            throw new Error('Network response was not ok');
+        })
+        .then(data => {
+            console.log('Data submitted successfully to Google Sheets:', data);
         })
         .catch((error) => {
-            // Errors in no-cors mode are limited, but we log them anyway
-            console.error('Error submitting to Google Sheets:', error);
+            console.warn('CORS request failed, trying no-cors mode:', error);
+            // Fallback to no-cors mode if CORS fails
+            fetch(GOOGLE_APPS_SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(sheetsData)
+            })
+                .then(() => {
+                    console.log('Data submitted to Google Sheets (no-cors mode - response not readable)');
+                })
+                .catch((noCorsError) => {
+                    console.error('Error submitting to Google Sheets (both methods failed):', noCorsError);
+                });
         });
 }
 
@@ -809,6 +883,7 @@ function submitForm(event, formName) {
     const nameInput = formElement.querySelector('[name="name"]');
     const mobileInput = formElement.querySelector('[name="mobile"]');
     const emailInput = formElement.querySelector('[name="email"]');
+    const whereYouFindUsInput = formElement.querySelector('[name="where_you_find_us"]');
     const countryCode = getCountryCodeForInput(mobileInput);
     const rawMobile = formData.get('mobile') ? formData.get('mobile').trim() : '';
     const fullMobile = combineDialCodeAndMobile(countryCode, rawMobile); // NEW
@@ -857,11 +932,25 @@ function submitForm(event, formName) {
                 mobileInput.parentNode.querySelector('.error');
             console.log(`Mobile value (raw): "${mobileInput.value}" | (trimmed): "${mobileValue}"`); // DEBUG
 
+            // Remove all non-digit characters to check length
+            const digitsOnly = mobileValue.replace(/\D/g, '');
+
             if (mobileValue === '') {
                 console.log("Validation Failed: Mobile is empty or spaces."); // DEBUG
                 isValid = false;
                 if (mobileErrorSpan) {
                     mobileErrorSpan.textContent = 'Mobile field is required.';
+                    // Use block display for form-group errors, inline for forms-input-fields
+                    const isFormGroup = mobileInput.closest('.form-group');
+                    mobileErrorSpan.style.display = isFormGroup ? 'block' : 'inline';
+                } else { console.warn("Mobile error span not found!"); } // DEBUG
+                mobileInput.classList.add('is-invalid');
+            }
+            else if (digitsOnly.length !== 10) {
+                console.log("Validation Failed: Mobile number must be exactly 10 digits."); // DEBUG
+                isValid = false;
+                if (mobileErrorSpan) {
+                    mobileErrorSpan.textContent = 'Phone number must be exactly 10 digits.';
                     // Use block display for form-group errors, inline for forms-input-fields
                     const isFormGroup = mobileInput.closest('.form-group');
                     mobileErrorSpan.style.display = isFormGroup ? 'block' : 'inline';
@@ -923,6 +1012,31 @@ function submitForm(event, formName) {
         }
     }
 
+    // Validate "Where you find us" dropdown
+    if (whereYouFindUsInput) {
+        const whereYouFindUsValue = whereYouFindUsInput.value.trim();
+        const whereYouFindUsErrorSpan = whereYouFindUsInput.closest('.forms-input-fields')?.querySelector('.error') ||
+            whereYouFindUsInput.closest('.form-group')?.querySelector('.error') ||
+            whereYouFindUsInput.parentNode.querySelector('.error');
+
+        if (whereYouFindUsInput.required) {
+            if (!whereYouFindUsValue) {
+                isValid = false;
+                if (whereYouFindUsErrorSpan) {
+                    whereYouFindUsErrorSpan.textContent = 'Please select where you found us.';
+                    const isFormGroup = whereYouFindUsInput.closest('.form-group');
+                    whereYouFindUsErrorSpan.style.display = isFormGroup ? 'block' : 'inline';
+                }
+                whereYouFindUsInput.classList.add('is-invalid');
+            } else {
+                whereYouFindUsInput.classList.add('is-valid');
+                if (whereYouFindUsErrorSpan) {
+                    whereYouFindUsErrorSpan.style.display = 'none';
+                }
+            }
+        }
+    }
+
     // --- Stop Submission If Invalid ---
     console.log("Final validation check. Is form valid?", isValid); // DEBUG
     if (!isValid) {
@@ -937,10 +1051,19 @@ function submitForm(event, formName) {
     // --- Prepare Data for Submission (If Valid) ---
     console.log("Validation passed. Preparing data for AJAX..."); // DEBUG
     var formnameValue = formData.get('form_name');
+
+    // Extract only the 10-digit phone number (remove country code for Google Sheets)
+    const rawMobileValue = formData.get('mobile') ? formData.get('mobile').trim() : '';
+    const digitsOnlyMobile = rawMobileValue.replace(/\D/g, '');
+    // Take only the last 10 digits (in case country code was included)
+    const tenDigitMobile = digitsOnlyMobile.slice(-10);
+
     var form_data = {
         name: formData.get('name') ? formData.get('name').trim() : '',
         email: formData.get('email') ? formData.get('email').trim() : '',
-        mobile: fullMobile,
+        mobile: tenDigitMobile, // Send only 10-digit number to Google Sheets
+        mobile_full: fullMobile, // Keep full number with country code for other uses
+        where_you_find_us: formData.get('where_you_find_us') ? formData.get('where_you_find_us').trim() : '',
         form_name: formnameValue,
         website_url: formData.get('website_url') ? formData.get('website_url') : window.location.origin,
         price: price,

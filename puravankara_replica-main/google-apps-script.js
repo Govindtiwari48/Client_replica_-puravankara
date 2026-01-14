@@ -18,34 +18,45 @@
  * - Column A: Name
  * - Column B: Phone
  * - Column C: Email
+ * - Column D: Time (automatically added)
+ * - Column E: Status (optional, can be empty)
+ * - Column F: Where You Find Us
  */
 
 function doPost(e) {
   try {
     // Parse the incoming JSON data
-    const data = JSON.parse(e.postData.contents);
+    let data;
+    if (e.postData && e.postData.contents) {
+      data = JSON.parse(e.postData.contents);
+    } else {
+      return ContentService.createTextOutput(JSON.stringify({
+        success: false,
+        message: 'No data received'
+      })).setMimeType(ContentService.MimeType.JSON);
+    }
     
-    // Get the active spreadsheet and sheet
-    const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Sheet1');
+    // Get the active spreadsheet
+    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    
+    // Get or create Sheet1
+    let sheet = ss.getSheetByName('Sheet1');
     
     // If Sheet1 doesn't exist, create it
     if (!sheet) {
-      const ss = SpreadsheetApp.getActiveSpreadsheet();
-      const newSheet = ss.insertSheet('Sheet1');
-      // Add headers if sheet is empty
-      if (newSheet.getLastRow() === 0) {
-        newSheet.getRange(1, 1, 1, 3).setValues([['Name', 'Phone', 'Email']]);
-      }
-      return ContentService.createTextOutput(JSON.stringify({
-        success: false,
-        message: 'Sheet1 created. Please try submitting again.'
-      })).setMimeType(ContentService.MimeType.JSON);
+      sheet = ss.insertSheet('Sheet1');
+      // Add headers matching your sheet structure
+      sheet.getRange(1, 1, 1, 6).setValues([['Name', 'Phone', 'Email', 'Time', 'Status', 'Where You Find Us']]);
     }
     
     // Extract form data
     const name = data.name || '';
-    const number = data.mobile || data.number || '';
+    let number = data.mobile || data.number || '';
     const email = data.email || '';
+    const whereYouFindUs = data.where_you_find_us || '';
+    
+    // Clean phone number - remove all non-digit characters
+    number = number.replace(/\D/g, '');
     
     // Validate required fields
     if (!name || !number) {
@@ -55,34 +66,67 @@ function doPost(e) {
       })).setMimeType(ContentService.MimeType.JSON);
     }
     
-    // Add headers if sheet is empty (first row)
-    if (sheet.getLastRow() === 0) {
-      sheet.getRange(1, 1, 1, 3).setValues([['Name', 'Phone', 'Email']]);
+    // Validate phone number is exactly 10 digits
+    if (number.length !== 10) {
+      return ContentService.createTextOutput(JSON.stringify({
+        success: false,
+        message: 'Phone number must be exactly 10 digits.'
+      })).setMimeType(ContentService.MimeType.JSON);
     }
     
-    // Append the new row with form data
+    // Add headers if sheet is empty (first row)
+    if (sheet.getLastRow() === 0) {
+      sheet.getRange(1, 1, 1, 6).setValues([['Name', 'Phone', 'Email', 'Time', 'Status', 'Where You Find Us']]);
+    }
+    
+    // Format timestamp
     const timestamp = new Date();
+    const formattedTime = Utilities.formatDate(timestamp, Session.getScriptTimeZone(), 'dd/MM/yyyy HH:mm:ss');
+    
+    // Append the new row with form data in correct column order
+    // Column A: Name, B: Phone, C: Email, D: Time, E: Status (empty), F: Where You Find Us
     sheet.appendRow([
       name,
       number,
       email,
-      timestamp // Optional: Add timestamp in column D if you want
+      formattedTime,
+      '', // Status column - empty by default
+      whereYouFindUs
     ]);
     
-    // Return success response
+    // Return success response with CORS headers
     return ContentService.createTextOutput(JSON.stringify({
       success: true,
       message: 'Data successfully saved to Google Sheet.',
-      timestamp: timestamp.toISOString()
+      timestamp: timestamp.toISOString(),
+      data: {
+        name: name,
+        phone: number,
+        email: email,
+        where_you_find_us: whereYouFindUs
+      }
     })).setMimeType(ContentService.MimeType.JSON);
     
   } catch (error) {
+    // Log error for debugging
+    Logger.log('Error in doPost: ' + error.toString());
+    Logger.log('Error stack: ' + error.stack);
+    
     // Return error response
     return ContentService.createTextOutput(JSON.stringify({
       success: false,
-      message: 'Error processing request: ' + error.toString()
+      message: 'Error processing request: ' + error.toString(),
+      error: error.toString()
     })).setMimeType(ContentService.MimeType.JSON);
   }
+}
+
+/**
+ * Handle OPTIONS request for CORS preflight
+ */
+function doOptions() {
+  return ContentService.createTextOutput('')
+    .setMimeType(ContentService.MimeType.JSON);
 }
 
 /**
@@ -93,7 +137,8 @@ function testDoPost() {
   const testData = {
     name: 'Test User',
     mobile: '+919876543210',
-    email: 'test@example.com'
+    email: 'test@example.com',
+    where_you_find_us: 'Google ads'
   };
   
   const mockEvent = {
