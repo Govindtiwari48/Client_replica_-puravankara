@@ -1415,96 +1415,140 @@
                         <small class="mb-4 d-block">Register Here And Avail The Best Offers!!</small>
                     </div>
                     <form name="modal-form1">
-                        <div class="row">
-                            <div class="col-12 forms-input-fields">
-                                <input type="text" name="name" id="name" class="form-control" autofocus required
-                                    placeholder="Name*">
-                                <span name="nameError" class="error">Name field is required</span>
-                            </div>
-                            <div class="col-12 forms-input-fields mb-3">
-                                <input type="number" name="mobile" id="mobile" class="form-control mobile-input"
-                                    required placeholder="Phone Number">
-                                <span name="nameError" class="error">Mobile field is required</span>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12 forms-input-fields">
-                                <input type="email" name="email" class="form-control" placeholder="Email (Optional)">
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12 forms-input-fields mb-3">
-                                <select name="where_you_find_us" class="form-control" required>
-                                    <option value="">Where did you find us?*</option>
-                                    <option value="Facebook">Facebook</option>
-                                    <option value="Google">Google</option>
-                                    <option value="Instagram">Instagram</option>
-                                    <option value="Other">Other</option>
-                                </select>
-                                <span class="error">Please select where you found us</span>
-                            </div>
-                        </div>
-                        <div>
-                            <input type="hidden" name="form_name" id="form_name" class="form-control form_name"
-                                value="Auto Modal">
-                            <input type="hidden" id="website_url" class="website_url" name="website_url">
-                        </div>
-                        <div class="row">
-                            <div class="col forms-input-fields">
-                                <div class="form-group acceptance">
-                                    <label class="form-check-label">
-                                        <input type="checkbox" checked class="form-check-input">
-                                        <span class="text on-rera">
-                                            I Consent to The Processing of Provided Data According To <a
-                                                href="Privacy-Policy.html" style="color:#007bff">Privacy Policy | </a>
-                                            <a href="terms-conditions.html" style="color:#007bff;">Terms &
-                                                Conditions</a>
-                                            , I Authorize Prop Solutions 4 U Pvt. Ltd. and its representatives to Call,
-                                            SMS, Email or WhatsApp Me About Its Products and Offers. This Consent
-                                            Overrides Any Registration For DNC/NDNC.
-                                        </span>
-                                        <span class="text non-rera">
-                                            Please be informed that this website is not intended to facilitate any sales
-                                            transactions. I understand and acknowledge that the project I am interested
-                                            in hasn't yet secured RERA clearance. The primary purpose of this website is
-                                            to generate interest and gather information. By providing my data, I consent
-                                            to its use in accordance with the <a href="Privacy-Policy.html"
-                                                style="color:#007bff">Privacy Policy | </a>
-                                            <a href="terms-conditions.html" style="color:#007bff;">Terms &
-                                                Conditions</a>
-                                        </span>
-                                    </label>
+                        <!-- Slide 1: Planning, Budget, Ad Source -->
+                        <div class="form-slide" id="slide1" style="display: block;">
+                            <div class="row">
+                                <div class="col-12 forms-input-fields mb-3">
+                                    <label class="form-label mb-2">When are you planning to Book your new home?</label>
+                                    <select name="planning_timeline" id="planning_timeline" class="form-control" required>
+                                        <option value="">Select an option*</option>
+                                        <option value="Immediately">Immediately</option>
+                                        <option value="2 - 6 Months">2 - 6 Months</option>
+                                        <option value="6 + Months">6 + Months</option>
+                                        <option value="Just exploring">Just exploring</option>
+                                    </select>
+                                    <span class="error">Please select when you are planning to book</span>
                                 </div>
-                                <div class="text-center">
-                                    <button type="submit" name="Submit"
-                                        class="custom-btn btn btn-block mx-auto data-id-btn mx-auto mt-3 on-rera"
-                                        onclick="submitForm(event, 'modal-form1')">
-                                        <span class="enquireNowBtn">Enquire Now </span>
-                                    </button>
-                                    <button type="submit" name="Submit"
-                                        class="custom-btn btn btn-block mx-auto data-id-btn mx-auto mt-3 non-rera"
-                                        onclick="submitForm(event, 'modal-form1')">
-                                        <span class="enquireNowBtn">Express Your Interest </span>
-                                    </button>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 forms-input-fields mb-3">
+                                    <label class="form-label mb-2">What is your Budget?</label>
+                                    <select name="budget" id="budget" class="form-control" required>
+                                        <option value="">Select an option*</option>
+                                        <option value="Below 3 Cr.">Below 3 Cr.</option>
+                                        <option value="3 - 4 Cr.">3 - 4 Cr.</option>
+                                        <option value="4 - 5 Cr.">4 - 5 Cr.</option>
+                                        <option value="6 Cr. +">6 Cr. +</option>
+                                    </select>
+                                    <span class="error">Please select your budget</span>
                                 </div>
-                                <span class="d-block text-center my-2 on-rera">
-                                    <h6>Or</h6>
-                                </span>
-                                <div class="enquireNowBtn d-none d-sm-none d-md-block mx-auto p-0">
-                                    <a target="_blank" class="monCall whatsappBtn data-id-btn on-rera discovery"
-                                        href="">
-                                        <img loading="lazy" alt="" src="assets/images/gif_icon/whatsappAnim.gif"
-                                            id="blink-text" class="img-responsive center-block whatsapp-img">Connect On
-                                        WhatsApp
-                                    </a>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 forms-input-fields mb-3">
+                                    <label class="form-label mb-2">Where did you see our Ad?</label>
+                                    <select name="where_you_find_us" id="where_you_find_us" class="form-control" required>
+                                        <option value="">Select an option*</option>
+                                        <option value="Google">Google</option>
+                                        <option value="Facebook">Facebook</option>
+                                        <option value="Instagram">Instagram</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                    <span class="error">Please select where you saw our ad</span>
                                 </div>
-                                <div class="slide-submit d-block d-sm-block d-md-none on-rera">
-                                    <span class="slide-submit-text">Slide to WhatsApp</span>
-                                    <button type="button" class="discovery_mobile whatsapp-slide-btn" target="_blank">
-                                        <img loading="lazy" alt="" src="assets/images/gif_icon/swipe-arrow.png"
-                                            class="img-responsive">
-                                    </button>
-                                    <!-- Changed to type="button" to prevent default form submission on click -->
+                            </div>
+                            <div class="text-center mt-4">
+                                <button type="button" class="custom-btn btn btn-block mx-auto data-id-btn mx-auto mt-3" id="nextSlideBtn">
+                                    <span class="enquireNowBtn">Next</span>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Slide 2: Name, Mobile, Email -->
+                        <div class="form-slide" id="slide2" style="display: none;">
+                            <div class="row">
+                                <div class="col-12 forms-input-fields">
+                                    <input type="text" name="name" id="name" class="form-control" autofocus required
+                                        placeholder="Name*">
+                                    <span name="nameError" class="error">Name field is required</span>
+                                </div>
+                                <div class="col-12 forms-input-fields mb-3">
+                                    <input type="number" name="mobile" id="mobile" class="form-control mobile-input"
+                                        required placeholder="Phone Number">
+                                    <span name="nameError" class="error">Mobile field is required</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 forms-input-fields">
+                                    <input type="email" name="email" class="form-control" placeholder="Email (Optional)">
+                                </div>
+                            </div>
+                            <div class="text-center mt-3 mb-3">
+                                <button type="button" class="btn btn-link text-decoration-none" id="prevSlideBtn" style="color: #007bff;">
+                                    ← Back
+                                </button>
+                            </div>
+                            <div>
+                                <input type="hidden" name="form_name" id="form_name" class="form-control form_name"
+                                    value="Auto Modal">
+                                <input type="hidden" id="website_url" class="website_url" name="website_url">
+                            </div>
+                            <div class="row">
+                                <div class="col forms-input-fields">
+                                    <div class="form-group acceptance">
+                                        <label class="form-check-label">
+                                            <input type="checkbox" checked class="form-check-input">
+                                            <span class="text on-rera">
+                                                I Consent to The Processing of Provided Data According To <a
+                                                    href="Privacy-Policy.html" style="color:#007bff">Privacy Policy | </a>
+                                                <a href="terms-conditions.html" style="color:#007bff;">Terms &
+                                                    Conditions</a>
+                                                , I Authorize Prop Solutions 4 U Pvt. Ltd. and its representatives to Call,
+                                                SMS, Email or WhatsApp Me About Its Products and Offers. This Consent
+                                                Overrides Any Registration For DNC/NDNC.
+                                            </span>
+                                            <span class="text non-rera">
+                                                Please be informed that this website is not intended to facilitate any sales
+                                                transactions. I understand and acknowledge that the project I am interested
+                                                in hasn't yet secured RERA clearance. The primary purpose of this website is
+                                                to generate interest and gather information. By providing my data, I consent
+                                                to its use in accordance with the <a href="Privacy-Policy.html"
+                                                    style="color:#007bff">Privacy Policy | </a>
+                                                <a href="terms-conditions.html" style="color:#007bff;">Terms &
+                                                    Conditions</a>
+                                            </span>
+                                        </label>
+                                    </div>
+                                    <div class="text-center">
+                                        <button type="submit" name="Submit"
+                                            class="custom-btn btn btn-block mx-auto data-id-btn mx-auto mt-3 on-rera"
+                                            onclick="submitForm(event, 'modal-form1')">
+                                            <span class="enquireNowBtn">Enquire Now </span>
+                                        </button>
+                                        <button type="submit" name="Submit"
+                                            class="custom-btn btn btn-block mx-auto data-id-btn mx-auto mt-3 non-rera"
+                                            onclick="submitForm(event, 'modal-form1')">
+                                            <span class="enquireNowBtn">Express Your Interest </span>
+                                        </button>
+                                    </div>
+                                    <span class="d-block text-center my-2 on-rera">
+                                        <h6>Or</h6>
+                                    </span>
+                                    <div class="enquireNowBtn d-none d-sm-none d-md-block mx-auto p-0">
+                                        <a target="_blank" class="monCall whatsappBtn data-id-btn on-rera discovery"
+                                            href="">
+                                            <img loading="lazy" alt="" src="assets/images/gif_icon/whatsappAnim.gif"
+                                                id="blink-text" class="img-responsive center-block whatsapp-img">Connect On
+                                            WhatsApp
+                                        </a>
+                                    </div>
+                                    <div class="slide-submit d-block d-sm-block d-md-none on-rera">
+                                        <span class="slide-submit-text">Slide to WhatsApp</span>
+                                        <button type="button" class="discovery_mobile whatsapp-slide-btn" target="_blank">
+                                            <img loading="lazy" alt="" src="assets/images/gif_icon/swipe-arrow.png"
+                                                class="img-responsive">
+                                        </button>
+                                        <!-- Changed to type="button" to prevent default form submission on click -->
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -1561,11 +1605,73 @@
     <script src="assets/chatbot/chatbot.js"></script>
     <script type="text/javascript">
         $(window).on('load', function () {
+            // Check if form was already submitted (don't show again unless page is refreshed)
+            const formSubmitted = localStorage.getItem('autoPopupFormSubmitted');
+            if (formSubmitted === 'true') {
+                return; // Don't show the popup if form was already submitted
+            }
+            
             // Wait for 10 seconds (10000 milliseconds) after the page has loaded
             setTimeout(function () {
                 $('#autoPopup').modal('show');
-            }, 100);
+            }, 10000);
             // 10000 milliseconds = 10 seconds
+        });
+
+        // Slide navigation for autoPopup form
+        $(document).ready(function() {
+            // Next button - validate slide 1 and move to slide 2
+            $('#nextSlideBtn').on('click', function() {
+                const planningTimeline = $('#planning_timeline').val();
+                const budget = $('#budget').val();
+                const whereYouFindUs = $('#where_you_find_us').val();
+                
+                // Clear previous errors
+                $('#slide1 .error').hide();
+                $('#slide1 select').removeClass('is-invalid');
+                
+                let isValid = true;
+                
+                // Validate all fields
+                if (!planningTimeline) {
+                    $('#planning_timeline').addClass('is-invalid');
+                    $('#planning_timeline').closest('.forms-input-fields').find('.error').show().text('Please select when you are planning to book');
+                    isValid = false;
+                }
+                
+                if (!budget) {
+                    $('#budget').addClass('is-invalid');
+                    $('#budget').closest('.forms-input-fields').find('.error').show().text('Please select your budget');
+                    isValid = false;
+                }
+                
+                if (!whereYouFindUs) {
+                    $('#where_you_find_us').addClass('is-invalid');
+                    $('#where_you_find_us').closest('.forms-input-fields').find('.error').show().text('Please select where you saw our ad');
+                    isValid = false;
+                }
+                
+                if (isValid) {
+                    // Hide slide 1 and show slide 2
+                    $('#slide1').hide();
+                    $('#slide2').show();
+                }
+            });
+            
+            // Back button - go back to slide 1
+            $('#prevSlideBtn').on('click', function() {
+                $('#slide2').hide();
+                $('#slide1').show();
+            });
+            
+            // Reset form slides when modal is closed
+            $('#autoPopup').on('hidden.bs.modal', function() {
+                $('#slide1').show();
+                $('#slide2').hide();
+                // Clear validation errors
+                $('#slide1 .error').hide();
+                $('#slide1 select').removeClass('is-invalid');
+            });
         });
 
         ////nav active////

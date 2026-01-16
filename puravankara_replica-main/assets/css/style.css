@@ -2737,6 +2737,34 @@ footer .elementor-widget-container p {
     justify-content: center;
 }
 
+/* Form slides styling */
+#autoPopup .form-slide {
+    transition: opacity 0.3s ease-in-out;
+}
+
+#autoPopup .form-slide label.form-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 8px;
+    display: block;
+}
+
+#autoPopup .form-slide select.form-control.is-invalid {
+    border-bottom-color: #dc3545;
+}
+
+#autoPopup #prevSlideBtn {
+    font-size: 14px;
+    padding: 0;
+    border: none;
+    background: none;
+}
+
+#autoPopup #prevSlideBtn:hover {
+    text-decoration: underline !important;
+}
+
 /* auto-popup end*/
 
 @media(min-width:500px) {

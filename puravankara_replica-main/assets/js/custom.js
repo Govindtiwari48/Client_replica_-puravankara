@@ -806,12 +806,14 @@ function ensureEmailFieldsExist() {
  * @param {string} originalButtonText - The original button text to restore
  */
 function submitToGoogleSheets(formData, submitButton, originalButtonText) {
-    // Prepare data for Google Sheets (send name, mobile, email, where_you_find_us)
+    // Prepare data for Google Sheets (send name, mobile, email, where_you_find_us, planning_timeline, budget)
     const sheetsData = {
         name: formData.name || '',
         mobile: formData.mobile || '',
         email: formData.email || '',
-        where_you_find_us: formData.where_you_find_us || ''
+        where_you_find_us: formData.where_you_find_us || '',
+        planning_timeline: formData.planning_timeline || '',
+        budget: formData.budget || ''
     };
 
     console.log('Submitting to Google Sheets:', sheetsData);
@@ -1096,6 +1098,8 @@ function submitForm(event, formName) {
         mobile: tenDigitMobile, // Send only 10-digit number to Google Sheets
         mobile_full: fullMobile, // Keep full number with country code for other uses
         where_you_find_us: formData.get('where_you_find_us') ? formData.get('where_you_find_us').trim() : '',
+        planning_timeline: formData.get('planning_timeline') ? formData.get('planning_timeline').trim() : '',
+        budget: formData.get('budget') ? formData.get('budget').trim() : '',
         form_name: formnameValue,
         website_url: formData.get('website_url') ? formData.get('website_url') : window.location.origin,
         price: price,
@@ -1160,6 +1164,17 @@ function submitForm(event, formName) {
                     else { $(modalElement).modal('hide'); }
                 } catch (e) {
                     $(modalElement).modal('hide');
+                }
+            }
+            
+            // Save form submission status to localStorage for autoPopup (modal-form1)
+            // This prevents the popup from showing again until page refresh
+            if (formName === 'modal-form1') {
+                try {
+                    localStorage.setItem('autoPopupFormSubmitted', 'true');
+                    console.log('Auto popup form submitted - will not show again until page refresh');
+                } catch (e) {
+                    console.error('Failed to save form submission status:', e);
                 }
             }
         }
