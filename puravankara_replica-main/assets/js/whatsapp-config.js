@@ -7,11 +7,11 @@
 
     const cmsConfig = {
         projectName: "Puravankara Lokhandwala Andheri W (MMR)",
-        phoneNumber: "919986661295",
-        contactNumber: "919986661295",
+        phoneNumber: "917828122424",
+        contactNumber: "917828122424",
         visibility: { "nonRera": { "whatsapp": true, "chatbot": false, "contact": true }, "nriNonRera": { "whatsapp": false, "chatbot": true, "contact": false }, "onRera": { "whatsapp": true, "chatbot": false, "contact": false }, "nriRera": { "whatsapp": true, "chatbot": false, "contact": false } },
         chatbot: {
-            phoneNumber: "919986661295",
+            phoneNumber: "917828122424",
             message:
                 "Hey There, I would like to explore further details About Puravankara Lokhandwala Andheri W (MMR). Please Share Details.",
         },

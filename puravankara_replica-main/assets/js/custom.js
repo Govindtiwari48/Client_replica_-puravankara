@@ -380,7 +380,7 @@ $(document).ready(function () {
         weblead: `Kindly share further details About ${projectName}. I would like to know more about this project.`
     };
     const messageMap = Object.assign({}, defaultMessageMap, whatsappConfig.messageMap || {});
-    const phoneNumber = (whatsappConfig.phoneNumber || '919986661295').replace(/\D/g, '');
+    const phoneNumber = (whatsappConfig.phoneNumber || '917828122424').replace(/\D/g, '');
 
     const sourceKey = (mainsource || utm_source || "").toLowerCase();
     // const whatsappMessage = messageMap[sourceKey] || messageMap["defaultMsg"];
