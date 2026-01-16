@@ -6,7 +6,7 @@
 // 1. Deploy your Google Apps Script as a Web App
 // 2. Copy the Web App URL from the deployment
 // 3. Paste it here
-const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxzwUq5Ih2eO3FsOJp155IhRSScCtikMYDsHJvClcE_1Vs_vjjYdjqZO3ABwabD9V4/exec';
+const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyY0otdMYjGnW2aEd5hi6FaUxRUdzHZJiKxGEWgh47H8_T8mwkrF8LJXrznKB-5dJI/exec';
 
 // Test function - Run this in browser console to test Google Sheets connection
 // Usage: testGoogleSheetsConnection()
@@ -106,14 +106,14 @@ $(document).ready(function () {
     $('[data-toggle="tooltip"]').tooltip();
 
     // Restrict phone number inputs to only accept numbers
-    $(document).on('input', 'input[name="mobile"], input[type="number"][name="mobile"]', function(e) {
+    $(document).on('input', 'input[name="mobile"], input[type="number"][name="mobile"]', function (e) {
         // Remove any non-numeric characters
         let value = $(this).val().replace(/\D/g, '');
         $(this).val(value);
     });
 
     // Prevent non-numeric characters on keypress
-    $(document).on('keypress', 'input[name="mobile"], input[type="number"][name="mobile"]', function(e) {
+    $(document).on('keypress', 'input[name="mobile"], input[type="number"][name="mobile"]', function (e) {
         // Allow: backspace, delete, tab, escape, enter, decimal point
         if ([46, 8, 9, 27, 13, 110, 190].indexOf(e.keyCode) !== -1 ||
             // Allow: Ctrl+A, Ctrl+C, Ctrl+V, Ctrl+X
@@ -651,13 +651,15 @@ $(document).ready(function () {
         }
     });
 
-    // Modal content update
-    $('#enquire-modal').on('show.bs.modal', function (event) {
+    // Modal content update - Updated to work with new 2-page form (autoPopup)
+    $('#autoPopup').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget);
         var recipient = button.data('bs-whatever');
         var modal = $(this);
-        modal.find('.modal-title').text(recipient);
-        modal.find('input[name="recipient"]').val(recipient);
+        // Update modal title if recipient is provided
+        if (recipient) {
+            modal.find('.modal-title').text(recipient);
+        }
     });
 
 });
@@ -1156,7 +1158,8 @@ function submitForm(event, formName) {
 
         // Close modal if open
         if (formName === 'modal-form' || formName === 'main-popup' || formName === 'modal-form1') {
-            const modalElement = document.getElementById('enquire-modal') || document.getElementById('autoPopup');
+            // Prioritize autoPopup (new 2-page form) over enquire-modal (old form)
+            const modalElement = document.getElementById('autoPopup') || document.getElementById('enquire-modal');
             if (modalElement) {
                 try {
                     const modalInstance = bootstrap.Modal.getInstance(modalElement);
@@ -1166,7 +1169,7 @@ function submitForm(event, formName) {
                     $(modalElement).modal('hide');
                 }
             }
-            
+
             // Save form submission status to localStorage for autoPopup (modal-form1)
             // This prevents the popup from showing again until page refresh
             if (formName === 'modal-form1') {
