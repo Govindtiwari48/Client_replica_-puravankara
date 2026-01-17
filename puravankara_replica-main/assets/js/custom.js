@@ -6,7 +6,7 @@
 // 1. Deploy your Google Apps Script as a Web App
 // 2. Copy the Web App URL from the deployment
 // 3. Paste it here
-const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyY0otdMYjGnW2aEd5hi6FaUxRUdzHZJiKxGEWgh47H8_T8mwkrF8LJXrznKB-5dJI/exec';
+const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx2wDCbeXc8mmgUedDucr9yORVIX2uM7IEe47rBEPaaIR6_nbykzT_1XjISSwSjLGg/exec';
 
 // Test function - Run this in browser console to test Google Sheets connection
 // Usage: testGoogleSheetsConnection()
